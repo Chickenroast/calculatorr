@@ -6,6 +6,9 @@ let lastButton = null;
 buttons.forEach((button) => {
   button.addEventListener("click", function () {
     const buttonText = this.textContent;
+    //REINITIALISE LE SON DE 0
+    clicSound.currentTime = 0;
+    clicSound.play();
 
     if (buttonText === "=") {
       // Si le bouton "=" est cliqué, effectuez le calcul
