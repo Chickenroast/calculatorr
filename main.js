@@ -4,7 +4,7 @@ let currentInput = "";
 
 let lastButton = null;
 
-buttons.forEach((button, index) => {
+buttons.forEach((button) => {
   button.addEventListener("click", function () {
     const buttonText = this.textContent;
 
@@ -23,7 +23,7 @@ buttons.forEach((button, index) => {
     }
 
     // DEPLACE LE BOUTTON
-    button.style.transform = `translateX(${Math.random() * 120 - 60}px)`;
+    button.style.transform = `translateX(${Math.random() * 220 - 100}px)`;
 
     // REVIENT BOUTON
     if (lastButton && lastButton !== button) {

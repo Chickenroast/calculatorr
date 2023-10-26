@@ -5,9 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Custom Bootstrap</title>
     
-    <link rel="stylesheet" href="/calculatorr/assets/index-99e1df24.css">
+    <script type="module" crossorigin src="/calculatorr/assets/index-7470e63f.js"></script>
+    <link rel="stylesheet" href="/calculatorr/assets/index-13839d9f.css">
   </head>
-  <body>
-    <h1>Hello, world!</h1>
+    <body class="m-4 p-4 bg-black">
+      <section class="wrong">
+          <h1>SOMETHING iS going wrong</h1>
+   </section>
+   <div class=" container d-flex justify-content-center align-items-center rounded-5">
+    <div id="calculator-container" class="custom-bg-gradient p-5 rounded-5">
+          <div class="input-group mb-4" id="output" over="document.getElementById('output');">
+            <input class="custom-btn" type="text" id="output2" readonly />
+        </div>
+        <div>
+            <button class="custom-btn mb-2" role="button" id="btn1">1</button>
+            <button class="custom-btn" role="button" id="btn2">2</button>
+            <button class="custom-btn" role="button" id="btn3">3</button>
+            <button class="custom-btn" role="button" id="btnPlus">+</button>
+        </div>
+        <div>
+            <button class="custom-btn mb-2" role="button" id="btn4">4</button>
+            <button class="custom-btn" role="button" id="btn5">5</button>
+            <button class="custom-btn" role="button" id="btn6">6</button>
+            <button class="custom-btn" role="button" id="btnMinus">-</button>
+        </div>
+        <div>
+            <button class="custom-btn mb-2" role="button" id="btn7">7</button>
+            <button class="custom-btn" role="button" id="btn8">8</button>
+            <button class="custom-btn" role="button" id="btn9">9</button>
+            <button class="custom-btn" role="button" id="btnMultiply">*</button>
+        </div>
+        <div over="document.getElementById('btn0'); moveTnull();">
+            <button class="custom-btn" role="button" id="btn0">0</button>
+            <button class="custom-btn" role="button" id="btnClear">C</button>
+            <button class="custom-btn" role="button" id="btnEquals">=</button>
+            <button class="custom-btn" role="button" id="btnDivide">/</button>
+        </div>
+        </div>
+    </section>
+    
   </body>
 </html>
