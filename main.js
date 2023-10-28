@@ -35,6 +35,11 @@ function disappearButtons() {
             clearInterval(button.bouncingInterval);
             button.style.transform = "translate(0, 0)";
           }
+          if (bounceCount >= 2) {
+            clearInterval(button.bouncingInterval);
+            button.style.transform = "translate(0, 0)";
+            rearrangeButtons(); // Rearrange the buttons
+          }
         }
       }
 
@@ -44,6 +49,31 @@ function disappearButtons() {
       button.bouncingInterval = setInterval(animate, 16);
     });
   }
+}
+
+function rearrangeButtons() {
+  const container = document.getElementById("calculator-container");
+  const buttonArray = Array.from(buttons);
+
+  // Shuffle the buttonArray to randomize button order
+  for (let i = buttonArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [buttonArray[i], buttonArray[j]] = [buttonArray[j], buttonArray[i]];
+  }
+
+  // Hide the buttons by setting their display property to 'none'
+  buttonArray.forEach((button) => {
+    button.style.display = "none";
+  });
+
+  // Clear the container
+  container.innerHTML = "";
+
+  // Add the rearranged buttons back to the container
+  buttonArray.forEach((button) => {
+    container.appendChild(button);
+    button.style.display = "inline-block"; // Revert the display property
+  });
 }
 
 //CALCULETTE
