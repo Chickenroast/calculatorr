@@ -1,41 +1,84 @@
 const buttons = document.querySelectorAll(".custom-btn");
 const output = document.getElementById("output2");
+const clicSound = document.getElementById("clicSound");
 let currentInput = "";
 let lastButton = null;
+
+function disappearButtons() {
+  const result = eval(document.getElementById("output2").value);
+
+  if (result % 2 === 0) {
+    buttons.forEach((button) => {
+      let startTime = Date.now();
+      let bounceCount = 0; // Initialize bounce count
+
+      function animate() {
+        const currentTime = Date.now();
+        const elapsedTime = currentTime - startTime;
+        const duration = 1000; // Animation duration in milliseconds
+        const distance = 200; // Bounce distance in pixels
+        const fraction = (elapsedTime % duration) / duration;
+        const yOffset = Math.sin(fraction * Math.PI) * distance;
+
+        button.style.transform = `translate(0, ${yOffset}px)`;
+
+        if (elapsedTime < duration) {
+          requestAnimationFrame(animate);
+        } else {
+          // Check if we've bounced three times
+          if (bounceCount < 2) {
+            // Reset start time and increment bounce count
+            startTime = Date.now();
+            bounceCount++;
+          } else {
+            // After the third bounce, stop the animation
+            clearInterval(button.bouncingInterval);
+            button.style.transform = "translate(0, 0)";
+          }
+        }
+      }
+
+      animate();
+
+      // Start the bouncing animation
+      button.bouncingInterval = setInterval(animate, 16);
+    });
+  }
+}
+
+//CALCULETTE
 
 buttons.forEach((button) => {
   button.addEventListener("click", function () {
     const buttonText = this.textContent;
-    //REINITIALISE LE SON DE 0
     clicSound.currentTime = 0;
     clicSound.play();
 
     if (buttonText === "=") {
-      // Si le bouton "=" est cliqué, effectuez le calcul
       output.value = eval(currentInput);
       currentInput = "";
+
+      // Appelez la fonction pour faire rebondir les boutons
+      disappearButtons();
     } else if (buttonText === "C") {
-      // Si le bouton "C" est cliqué, effacez l'input
       currentInput = "";
       output.value = "";
     } else {
-      // Sinon, ajoutez le texte du bouton à l'input en cours
       currentInput += buttonText;
       output.value = currentInput;
     }
 
-    // DEPLACE LE BOUTON
-    button.style.transform = `translateX(${Math.random() * 220 - 100}px)`;
+    button.style.transform = `translateX(${Math.random() * 220 - 100}px`;
 
-    // REVIENT BOUTON
     if (lastButton && lastButton !== button) {
       lastButton.style.transform = "translateX(0)";
     }
 
-    // Mémorisez le dernier bouton cliqué
     lastButton = button;
   });
 });
+
+// FONCTION QUI RIGOLE
 
 const elementsToShake = document.querySelectorAll(".custom-btn");
 
