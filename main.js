@@ -1,55 +1,57 @@
+/* Déclarations */
+
 const buttons = document.querySelectorAll(".custom-btn");
 const output = document.getElementById("output2");
 const clicSound = document.getElementById("clicSound");
 let currentInput = "";
 let lastButton = null;
+let lastResult = null; // Variable to store the last input
 
+/* Function pair result */
 function disappearButtons() {
-  const result = eval(document.getElementById("output2").value);
+  buttons.forEach((button) => {
+    let startTime = Date.now();
+    let bounceCount = 0; // Initialize bounce count
 
-  if (result % 2 === 0) {
-    buttons.forEach((button) => {
-      let startTime = Date.now();
-      let bounceCount = 0; // Initialize bounce count
+    function animate() {
+      const currentTime = Date.now();
+      const elapsedTime = currentTime - startTime;
+      const duration = 1000; // Animation duration in milliseconds
+      const distance = 200; // Bounce distance in pixels
+      const fraction = (elapsedTime % duration) / duration;
+      const yOffset = Math.sin(fraction * Math.PI) * distance;
 
-      function animate() {
-        const currentTime = Date.now();
-        const elapsedTime = currentTime - startTime;
-        const duration = 1000; // Animation duration in milliseconds
-        const distance = 200; // Bounce distance in pixels
-        const fraction = (elapsedTime % duration) / duration;
-        const yOffset = Math.sin(fraction * Math.PI) * distance;
+      button.style.transform = `translate(0, ${yOffset}px)`;
 
-        button.style.transform = `translate(0, ${yOffset}px)`;
-
-        if (elapsedTime < duration) {
-          requestAnimationFrame(animate);
+      if (elapsedTime < duration) {
+        requestAnimationFrame(animate);
+      } else {
+        // Check if we've bounced three times
+        if (bounceCount < 2) {
+          // Reset start time and increment bounce count
+          startTime = Date.now();
+          bounceCount++;
         } else {
-          // Check if we've bounced three times
-          if (bounceCount < 2) {
-            // Reset start time and increment bounce count
-            startTime = Date.now();
-            bounceCount++;
-          } else {
-            // After the third bounce, stop the animation
-            clearInterval(button.bouncingInterval);
-            button.style.transform = "translate(0, 0)";
-          }
-          if (bounceCount >= 2) {
-            clearInterval(button.bouncingInterval);
-            button.style.transform = "translate(0, 0)";
-            rearrangeButtons(); // Rearrange the buttons
-          }
+          // After the third bounce, stop the animation
+          clearInterval(button.bouncingInterval);
+          button.style.transform = "translate(0, 0)";
+        }
+        if (bounceCount >= 2) {
+          clearInterval(button.bouncingInterval);
+          button.style.transform = "translate(0, 0)";
+          rearrangeButtons(); // Rearrange the buttons start function
         }
       }
+    }
 
-      animate();
+    animate();
 
-      // Start the bouncing animation
-      button.bouncingInterval = setInterval(animate, 16);
-    });
-  }
+    // Start the bouncing animation
+    button.bouncingInterval = setInterval(animate, 16);
+  });
 }
+
+/* Function pair result */
 
 function rearrangeButtons() {
   const container = document.getElementById("calculator-container");
@@ -77,7 +79,7 @@ function rearrangeButtons() {
 }
 
 //CALCULETTE
-
+/* parcours chaque element du tableau*/
 buttons.forEach((button) => {
   button.addEventListener("click", function () {
     const buttonText = this.textContent;
@@ -85,18 +87,47 @@ buttons.forEach((button) => {
     clicSound.play();
 
     if (buttonText === "=") {
-      output.value = eval(currentInput);
-      currentInput = "";
-
-      // Appelez la fonction pour faire rebondir les boutons
-      disappearButtons();
+      if (currentInput.includes("+")) {
+        const [a, b] = currentInput.split("+").map(Number);
+        currentInput = a + b;
+        disappearButtons();
+      } else if (currentInput.includes("-")) {
+        const [a, b] = currentInput.split("-").map(Number);
+        currentInput = a - b;
+        disappearButtons();
+      } else if (currentInput.includes("*")) {
+        const [a, b] = currentInput.split("*").map(Number);
+        currentInput = a * b;
+        disappearButtons();
+      } else if (currentInput.includes("/")) {
+        const [a, b] = currentInput.split("/").map(Number);
+        currentInput = a / b;
+        disappearButtons();
+      }
+      lastResult = currentInput;
+      output.value = currentInput;
     } else if (buttonText === "C") {
-      currentInput = "";
+      currentInput = ""; // Réinitialise l'entrée
       output.value = "";
+      disappearButtons();
     } else {
       currentInput += buttonText;
       output.value = currentInput;
     }
+
+    // if (buttonText === "=") {
+    //   /* EVAL VA EVALUER LE CALCUL A OBTENIR ET DONNER LE RESULTAT
+    //   MAIS ATTENTION ELLE PEUT EXECUTER N IMPORTE QUEL CODE JAVASCRIPT ET L EXECUTER*/
+    //   currentInput = eval(currentInput); // Calculate the current input
+    //   lastResult = currentInput; // Store the last result
+    //   output.value = currentInput;
+    // } else if (buttonText === "C") {
+    //   currentInput = lastResult; // Restore the last result
+    //   output.value = lastResult;
+    // } else {
+    //   currentInput += buttonText;
+    //   output.value = currentInput;
+    // }
 
     button.style.transform = `translateX(${Math.random() * 220 - 100}px`;
 
@@ -105,10 +136,11 @@ buttons.forEach((button) => {
     }
 
     lastButton = button;
+    output.value = currentInput;
   });
 });
 
-// FONCTION QUI RIGOLE
+// FONCTION SHAKE
 
 const elementsToShake = document.querySelectorAll(".custom-btn");
 
